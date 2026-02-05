@@ -1,0 +1,6 @@
+@MaterialControl_HostAddress = http://localhost:5064
+
+GET {{MaterialControl_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
