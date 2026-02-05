@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product ↔ Raw Material</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Product ↔ Raw Material</h1>
+    <a href="index.html">← Back to Home</a>
+    
+    <div id="loading">Loading associations...</div>
+    <ul id="associationsList" style="display:none;"></ul>
+
+    <script>
+        const API_BASE = 'https://localhost:44340';
+        
+        async function loadAssociations() {
+            try {
+                console.log('Fetching from:', `${API_BASE}/api/productrawmaterials`);
+                
+                const response = await fetch(`${API_BASE}/api/productrawmaterials`);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+                }
+                
+                const associations = await response.json();
+                console.log('Associations received:', associations);
+                
+                const ul = document.getElementById('associationsList');
+                const loading = document.getElementById('loading');
+                
+                if (!associations || associations.length === 0) {
+                    loading.innerHTML = 'No associations found';
+                    return;
+                }
+                
+                ul.innerHTML = '';
+                associations.forEach(a => {
+                    const li = document.createElement('li');
+                    li.textContent = `Product: ${a.productName || a.productId} ↔ Material: ${a.rawMaterialName || a.rawMaterialId} - Qty: ${a.requiredQuantity || 0}`;
+                    ul.appendChild(li);
+                });
+                
+                loading.style.display = 'none';
+                ul.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error details:', error);
+                document.getElementById('loading').innerHTML = 
+                    `Error: ${error.message}<br>
+                     <button onclick="loadAssociations()">Try Again</button>`;
+            }
+        }
+
+        loadAssociations();
+    </script>
+</body>
+</html>

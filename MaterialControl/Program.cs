@@ -28,8 +28,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(); // permite servir HTML, CSS e JS do wwwroot
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+app.UseStaticFiles(); // permite servir HTML, CSS e JS do wwwroot

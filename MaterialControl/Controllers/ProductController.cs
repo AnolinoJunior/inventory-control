@@ -59,6 +59,10 @@ namespace MaterialControl.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(ProductCreateDto dto)
         {
+            
+            if (await _context.Products.AnyAsync(p => p.Code == dto.Code))
+                return BadRequest("Product code already exists.");
+
             var product = new Product
             {
                 Code = dto.Code,
@@ -72,7 +76,8 @@ namespace MaterialControl.Controllers
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
 
-     
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, ProductUpdateDto dto)
         {

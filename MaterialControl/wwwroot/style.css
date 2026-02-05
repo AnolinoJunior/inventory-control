@@ -1,0 +1,99 @@
+/* Navbar principal */
+.navbar {
+    background-color: white;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+    .navbar .logo {
+        font-weight: bold;
+        font-size: 20px;
+        color: #333333;
+        margin-right: 20px;
+    }
+
+        .navbar .logo span {
+            color: #ff7f00;
+        }
+
+    .navbar a {
+        color: #333333;
+        font-size: 16px;
+        margin-right: 25px;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .navbar a:hover {
+            color: #ff7f00;
+        }
+
+    .navbar .active {
+        background-color: #ff7f00;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 0px;
+    }
+
+/* H1 com destaque em "System" */
+h1 {
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+    color: white;
+    
+    padding: 20px;
+    border-radius: 10px;
+}
+
+    h1 .color {
+        color: #ff7f00; /* deixa "System" laranja */
+    }
+
+/* Body com imagem de fundo ajustada */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-image: url('tipos-de-industria.jpg');
+    background-size: cover; /* mantém proporção e cobre toda a tela */
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+    /* Overlay para escurecer a imagem */
+    body::before {
+        content: "";
+        position: absolute; /* trocar de fixed para absolute */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 0; /* fica atrás do conteúdo */
+    }
+
+    body * {
+        position: relative;
+        z-index: 1; /* conteúdo acima do overlay */
+    }
+
+h2 {
+    text-align: center;
+    font-size: 28px; /* tamanho menor que h1 */
+    font-weight: 500;
+    color: white; /* cor do texto */
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7); /* sombra para legibilidade */
+    max-width: 900px; /* largura máxima do texto */
+    margin: 30px auto; /* centraliza horizontal e dá espaço vertical */
+    line-height: 1.5; /* espaçamento entre linhas */
+}
+
+    h2 .highlight {
+        color: #ff7f00; /* destaque em laranja */
+        font-weight: bold;
+    }
