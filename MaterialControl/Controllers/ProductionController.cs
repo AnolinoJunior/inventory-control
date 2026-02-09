@@ -22,19 +22,5 @@ namespace MaterialControl.Controllers
             ProductionResultDto result = await _service.CalculateAsync();
             return Ok(result);
         }
-
-        [HttpPost("execute/{productId}")]
-        public async Task<IActionResult> ExecuteProduction(int productId, [FromBody] ProductionExecutionDto dto)
-        {
-            if (dto.Quantity <= 0)
-                return BadRequest("Quantity must be greater than zero.");
-
-            var result = await _service.ExecuteProductionAsync(productId, dto.Quantity);
-
-            if (!result.Success)
-                return BadRequest(result);
-
-            return Ok(result);
-        }
     }
 }

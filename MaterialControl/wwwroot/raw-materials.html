@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raw Materials - Stock System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <nav class="nav">
+            <a class="navLink" href="./index.html">Home</a>
+            <a class="navLink" href="./products.html">Products</a>
+            <a class="navLink" href="./raw-materials.html">Raw Materials</a>
+            <a class="navLink" href="./productrawmaterial.html">Product Raw Materials</a>
+            <a class="navLink" href="./production.html">Production Suggestions</a>
+        </nav>
+
+        <h1>Raw Materials Management</h1>
+
+        <p class="muted">
+            Manage your raw materials (inputs/ingredients) here.
+        </p>
+
+        <section class="section">
+            <h2 id="rawMaterialFormTitle">Create New Raw Material</h2>
+
+            <form id="rawMaterialForm" class="form">
+                <input type="hidden" id="rawMaterialId">
+
+                <div class="formGroup">
+                    <label for="rawMaterialCode">Code *</label>
+                    <input type="text"
+                           id="rawMaterialCode"
+                           name="code"
+                           required
+                           placeholder="ex: MAT01" />
+                </div>
+
+                <div class="formGroup">
+                    <label for="rawMaterialName">Name *</label>
+                    <input type="text"
+                           id="rawMaterialName"
+                           name="name"
+                           required
+                           placeholder="ex: Steel Sheet" />
+                </div>
+
+                <div class="formGroup">
+                    <label for="rawMaterialStock">Stock Quantity *</label>
+                    <input type="number"
+                           id="rawMaterialStock"
+                           name="stockQuantity"
+                           step="0.0001"
+                           min="0"
+                           required
+                           placeholder="ex: 100" />
+                    <small class="formHint">Current quantity available in stock</small>
+                </div>
+
+                <div class="formActions">
+                    <button type="submit" id="saveBtn" class="btn btn-primary">Save Raw Material</button>
+                    <button type="button" id="newRawMaterialBtn" class="btn btn-secondary">New Raw Material</button>
+                    <button type="button" id="cancelBtn" class="btn btn-secondary" style="display: none;">Cancel</button>
+                </div>
+            </form>
+
+            <div id="errorMessage" style="display: none; margin-top: 10px;" class="alert alert-error" role="alert">
+                Error saving raw material.
+            </div>
+
+            <div id="successMessage" style="display: none; margin-top: 10px;" class="alert alert-success" role="alert">
+                Raw material saved successfully!
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Raw Materials List</h2>
+
+            <div id="loadingIndicator" style="display: none; margin-bottom: 20px;">
+                Loading raw materials...
+            </div>
+
+            <div id="listError" style="display: none;" class="alert alert-error" role="alert">
+                Error loading raw materials.
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Stock Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="rawMaterialsTableBody">
+                    <tr>
+                        <td colspan="4">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="noDataMessage" style="display: none; text-align: center; padding: 40px; color: #666;">
+                No raw materials found.
+            </div>
+        </section>
+    </main>
+
+    <script src="Js/api.js"></script>
+    <script src="Js/raw-materials.js"></script>
+</body>
+</html>

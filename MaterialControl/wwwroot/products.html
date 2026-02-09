@@ -1,67 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Stock System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Products</h1>
-    <a href="index.html">← Back to Home</a>
-    
-    <div id="loading">Loading products...</div>
-    <ul id="productsList" style="display:none;"></ul>
+    <main class="container">
+        <nav class="nav">
+            <a class="navLink" href="./index.html">Home</a>
+            <a class="navLink" href="./products.html">Products</a>
+            <a class="navLink" href="./raw-materials.html">Raw Materials</a>
+            <a class="navLink" href="./productrawmaterial.html">Product Raw Materials</a>
+            <a class="navLink" href="./production.html">Production Suggestions</a>
+        </nav>
 
-    <script>
-        const API_BASE = 'https://localhost:44340';
-        
-        async function loadProducts() {
-            try {
-                console.log('Fetching from:', `${API_BASE}/api/products`);
-                
-                const response = await fetch(`${API_BASE}/api/products`);
-                console.log('Response status:', response.status);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${await response.text()}`);
-                }
-                
-                const products = await response.json();
-                console.log('Products received:', products);
-                
-                const ul = document.getElementById('productsList');
-                const loading = document.getElementById('loading');
-                
-                if (products.length === 0) {
-                    loading.innerHTML = 'No products found';
-                    return;
-                }
-                
-                ul.innerHTML = '';
-                products.forEach(p => {
-                    const li = document.createElement('li');
-                    li.textContent = `${p.code || p.name} - $${p.price || 0}`;
-                    ul.appendChild(li);
-                });
-                
-                loading.style.display = 'none';
-                ul.style.display = 'block';
-                
-            } catch (error) {
-                console.error('Error details:', error);
-                document.getElementById('loading').innerHTML = 
-                    `Error: ${error.message}<br>
-                     <button onclick="loadProducts()">Try Again</button>`;
-            }
-        }
+        <h1>Product Management</h1>
 
-        // Teste rápido no console
-        console.log('Testing API connection...');
-        fetch(`${API_BASE}/api/products`)
-            .then(r => console.log('Test result:', r.status))
-            .catch(err => console.error('Test failed:', err));
+        <p class="muted">
+            Manage your products here. You can create, edit, delete products.
+        </p>
 
-        loadProducts();
-    </script>
+        <section class="section">
+            <h2 id="productFormTitle">Create New Product</h2>
+
+            <form id="productForm" class="form">
+                <div class="formGroup">
+                    <label for="productCode">Code *</label>
+                    <input type="text"
+                           id="productCode"
+                           name="code"
+                           required
+                           placeholder="ex: PROD-001" />
+                </div>
+
+                <div class="formGroup">
+                    <label for="productName">Name *</label>
+                    <input type="text"
+                           id="productName"
+                           name="name"
+                           required
+                           placeholder="ex: Widget A" />
+                </div>
+
+                <div class="formGroup">
+                    <label for="productValue">Price ($) *</label>
+                    <input type="number"
+                           id="productValue"
+                           name="price"
+                           step="0.01"
+                           min="0"
+                           required
+                           placeholder="ex: 100.00" />
+                </div>
+
+                <div class="formActions">
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                    <button type="button" id="newProductBtn" class="btn btn-secondary">New Product</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="section">
+            <h2>Product List</h2>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productsTableBody">
+                    <tr>
+                        <td colspan="4">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="Js/api.js"></script>
+    <script src="Js/products.js"></script>
 </body>
 </html>

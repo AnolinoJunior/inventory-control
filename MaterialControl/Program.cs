@@ -1,40 +1,37 @@
 ﻿using MaterialControl.Data;
 using MaterialControl.Services;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Cors;
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 builder.Services.AddControllers();
-
-// Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// DbContext com PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// 🔹 Registra o ProductionService para injeção de dependência
 builder.Services.AddScoped<ProductionService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowAll");
+app.UseRouting();
 app.UseHttpsRedirection();
-
-app.UseStaticFiles(); // permite servir HTML, CSS e JS do wwwroot
-
+app.UseStaticFiles(); 
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
-
-app.UseStaticFiles(); // permite servir HTML, CSS e JS do wwwroot
+app.UseStaticFiles(); 

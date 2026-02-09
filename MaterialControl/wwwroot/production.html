@@ -1,61 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Production Suggestion</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasible Production - Stock System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Production Suggestion</h1>
-<a href="index.html">← Back to Home</a>
+    <main class="container">
+        <nav class="nav">
+            <a class="navLink" href="./index.html">Home</a>
+            <a class="navLink" href="./products.html">Products</a>
+            <a class="navLink" href="./raw-materials.html">Raw Materials</a>
+            <a class="navLink" href="./productrawmaterial.html">Product-Raw Materials</a>
+            <a class="navLink" href="./production.html">Production Suggestions</a>
+        </nav>
 
-<div id="loading">Loading production suggestion...</div>
-<p>Total Production Value: <span id="total">$0.00</span></p>
-<ul id="suggestionList" style="display:none;"></ul>
+        <h1>Production Suggestions</h1>
 
-<script>
-const API_BASE = 'https://localhost:44340';
+        <p class="muted">
+            This page shows which products can be produced with the current raw materials stock.
+            Products are prioritized by value (highest value first).
+        </p>
 
-async function loadSuggestion() {
-  try {
-    console.log('Fetching production from:', `${API_BASE}/api/production/suggestion`);
-    
-    const res = await fetch(`${API_BASE}/api/production/suggestion`);
-    console.log('Response status:', res.status);
-    
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${await res.text()}`);
-    }
-    
-    const data = await res.json();
-    console.log('Production data:', data);
-    
-    document.getElementById("total").textContent = `$${data.totalProductionValue?.toFixed(2) || '0.00'}`;
-    document.getElementById("loading").style.display = 'none';
-    
-    const list = document.getElementById("suggestionList");
-    list.style.display = 'block';
-    list.innerHTML = "";
-    
-    if (data.products && data.products.length > 0) {
-      data.products.forEach(p => {
-        const li = document.createElement("li");
-        li.textContent = `${p.productName || 'Product'} - ${p.quantity || 0} units - Total: $${(p.totalValue || 0).toFixed(2)}`;
-        list.appendChild(li);
-      });
-    } else {
-      list.innerHTML = '<li>No products can be produced with current stock</li>';
-    }
-    
-  } catch (error) {
-    console.error('Error details:', error);
-    document.getElementById("loading").innerHTML = 
-      `Error: ${error.message}<br>
-       <button onclick="loadSuggestion()">Try Again</button>`;
-  }
-}
+       
+        <div style="text-align: center; margin: 30px 0;">
+            <button id="refreshBtn" class="btn btn-primary">Refresh Production Suggestions</button>
+        </div>
 
-loadSuggestion();
-</script>
+        <section class="section">
+            <h2>Producible Products</h2>
+
+            <div id="loadingIndicator" style="display: none; text-align: center; margin: 20px 0; padding: 15px; background-color: #f0f9ff; border-radius: 8px;">
+                Calculating production suggestion...
+            </div>
+
+            <div id="errorMessage" style="display: none;" class="alert alert-error" role="alert">
+                Error loading production data.
+            </div>
+
+            <div id="successMessage" style="display: none;" class="alert alert-success" role="alert">
+                Production suggestion loaded successfully!
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Producible Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Value</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productionTableBody">
+                    <tr>
+                        <td colspan="4">Click "Refresh" to load suggestions</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="noDataMessage" style="display: none; text-align: center; padding: 40px; color: #666;">
+                No products can be produced with current stock.
+            </div>
+
+            <div style="margin-top: 24px; padding: 16px; background: #f3f4f6; border-radius: 8px;">
+                <strong>Total Production Value: </strong>
+                <span id="totalValue" style="font-size: 1.2em; color: #059669;">R$ 0,00</span>
+            </div>
+        </section>
+    </main>
+
+    <script src="Js/api.js"></script>
+    <script src="Js/production.js"></script>
 </body>
 </html>
